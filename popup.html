@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Market Ticker</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<div id="popup">
+
+  <div class="p-header">
+    <div class="p-logo">
+      <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+        <rect x="1.5" y="1.5" width="17" height="17" rx="2.5" stroke="currentColor" stroke-width="1.4"/>
+        <polyline points="3,14.5 6.5,9.5 9.5,12.5 13.5,7 17,10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      MARKET TICKER
+    </div>
+    <button id="btn-vis">Hide Widget</button>
+  </div>
+
+  <div class="p-section">
+    <div class="p-label">THEME</div>
+    <div class="p-row-2">
+      <button class="theme-btn" data-theme="dark">◑ Dark</button>
+      <button class="theme-btn" data-theme="light">○ Light</button>
+    </div>
+  </div>
+
+  <div class="p-section">
+    <div class="p-label-row">
+      <div class="p-label">WATCHLIST <span class="p-hint" id="wl-count"></span></div>
+      <button id="btn-clear" title="Remove all symbols">Clear All</button>
+    </div>
+    <div id="active-list" class="active-list"></div>
+  </div>
+
+  <div class="p-section p-section-last">
+    <div class="p-label">ADD SYMBOLS <span class="p-hint" id="limit-hint"></span></div>
+    <input id="sym-search" type="text" placeholder="Filter symbols…" autocomplete="off" spellcheck="false">
+    <div id="sector-tabs" class="sector-tabs"></div>
+    <div id="sym-grid" class="sym-grid"></div>
+  </div>
+
+</div>
+<script src="popup.js"></script>
+</body>
+</html>
