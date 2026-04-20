@@ -1,3 +1,7 @@
+import { loadSymbols } from "./symbolService.js";
+
+loadSymbols();
+
 'use strict';
 
 const SK = {
