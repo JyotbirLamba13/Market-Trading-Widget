@@ -1,4 +1,4 @@
-import { loadSymbols } from "./symbolService.js";
+
 
 loadSymbols();
 
@@ -38,6 +38,17 @@ const CATALOG = {
 const ALL_SYMBOLS = [...new Set(Object.values(CATALOG).flat())];
 const label = sym => sym.split(':')[1] || sym;
 
+function formatSymbol(sym) {
+  if (!sym) return sym;
+
+  // Already correct
+  if (sym.includes(':')) return sym;
+
+  // fallback (should rarely happen)
+  return `NSE:${sym}`;
+}
+
+
 // ── State ─────────────────────────────────────────────────────────────────────
 let st = {
   theme:     DEFAULTS.theme,
@@ -56,6 +67,19 @@ chrome.storage.local.get([SK.THEME, SK.LIST, SK.PINNED, SK.HIDDEN], res => {
   st.pinned    = res[SK.PINNED] || DEFAULTS.pinned;
   st.hidden    = !!res[SK.HIDDEN];
 
+  // Fix old invalid symbols
+st.watchlist = st.watchlist.map(s => {
+  if (s === 'NSE:NIFTYMIDCAP100') return 'NSE:MIDCPNIFTY';
+  if (s === 'NSE:CNXIT') return 'NSE:NIFTYIT';
+  return s;
+});
+
+st.pinned = st.pinned.map(s => {
+  if (s === 'NSE:NIFTYMIDCAP100') return 'NSE:MIDCPNIFTY';
+  if (s === 'NSE:CNXIT') return 'NSE:NIFTYIT';
+  return s;
+});
+  
   // Cap any previously over-limit watchlist
   if (st.watchlist.length > MAX_SYMBOLS) {
     st.watchlist = st.watchlist.slice(0, MAX_SYMBOLS);
@@ -228,7 +252,7 @@ function add(sym) {
   if (st.watchlist.length >= MAX_SYMBOLS) return;
   // Extra safety: only allow catalog symbols
   if (!ALL_SYMBOLS.includes(sym)) return;
-  st.watchlist.push(sym);
+  st.watchlist.push(formatSymbol(sym));
   chrome.storage.local.set({ [SK.LIST]: st.watchlist });
   renderWatchlist();
   renderGrid();
